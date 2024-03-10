@@ -170,6 +170,7 @@ public class Biz implements MenuListener {
     @Override
     public void menuSelected(MenuEvent e) {
         if(e.getSource().equals(this.openJson)){
+            this.console.dispatchEvent(new WindowEvent(this.console, WindowEvent.WINDOW_CLOSING));
             this.init();
         }else if(e.getSource().equals(this.update)){
             this.updateValues(this.data,this.correlations);
