@@ -45,16 +45,13 @@ public class Biz implements MenuListener {
             }
         }
         this.init();
+
     }
 
     private void init(){
         this.dao = new Dao();
         this.data = this.dao.getData();
         this.correlations=this.dao.getGuiData();
-        this.initGui();
-    }
-
-    private void initGui() {
         this.console = new Console();
         this.openJson = new JMenu("Open another json (discard values if not updated)");
         this.openJson.addMenuListener(this);
@@ -67,6 +64,13 @@ public class Biz implements MenuListener {
         this.console.setSize(this.console.getSIZEW(),this.console.getSIZEY());
         this.frameValidation(this.console);
     }
+
+    private void resetGui() {
+        this.console.resetView();
+        this.consoleCompose();
+        this.frameValidation(this.console);
+    }
+
 
     private void consoleCompose(){
         JPanel content = new JPanel(new GridLayout(0,1));
@@ -170,15 +174,16 @@ public class Biz implements MenuListener {
     @Override
     public void menuSelected(MenuEvent e) {
         if(e.getSource().equals(this.openJson)){
-            this.console.dispatchEvent(new WindowEvent(this.console, WindowEvent.WINDOW_CLOSING));
-            this.init();
+            this.dao=new Dao();
+            this.data= this.dao.getData();
+            this.correlations=this.dao.getGuiData();
+            this.resetGui();
         }else if(e.getSource().equals(this.update)){
             this.updateValues(this.data,this.correlations);
             this.dao.saveData();
             this.data= this.dao.getData();
             this.correlations=this.dao.getGuiData();
-            this.console.dispatchEvent(new WindowEvent(this.console, WindowEvent.WINDOW_CLOSING));
-            this.initGui();
+            this.resetGui();
         }
     }
 
