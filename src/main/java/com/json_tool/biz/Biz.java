@@ -59,6 +59,7 @@ public class Biz implements MenuListener {
         this.console.getMenu().add(Box.createHorizontalGlue());
         this.console.getMenu().add(this.update);
         this.consoleCompose();
+        this.console.setSize(this.console.getSIZEW(),this.console.getSIZEY());
         this.frameValidation(this.console);
     }
 
@@ -120,8 +121,8 @@ public class Biz implements MenuListener {
     private void updateValues(HashMap<String,Object> map,HashMap<String,Object> correlation){
         for(Map.Entry<String,Object> e :map.entrySet()){
             if(e.getValue() instanceof String){
-                if(!((HashMap<String,JTextField>)correlation.get(e.getKey())).get(e.getValue()).getText().isEmpty()){
-                    e.setValue(((HashMap<String,JTextField>)correlation.get(e.getKey())).get(e.getValue()).getText());
+                if(!((HashMap<String,JTextField>)correlation.get(e.getKey())).get(String.valueOf(e.getValue())).getText().isEmpty()){
+                    e.setValue(((HashMap<String,JTextField>)correlation.get(e.getKey())).get(String.valueOf(e.getValue())).getText());
                 }
             }else{
                 if(e.getValue() instanceof HashMap<?,?>){
@@ -153,8 +154,10 @@ public class Biz implements MenuListener {
     private void frameValidation(JFrame j){
         j.setVisible(true);
         Dimension d = j.getSize();
-        j.pack();
+        j.validate();
+        j.repaint();
         j.setSize(d);
+        j.setLocationRelativeTo(null);
     }
 
     @Override
