@@ -29,7 +29,6 @@ public class Dao {
     private void init() {
         JFileChooser guide = new JFileChooser();
         guide.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        guide.setFileFilter(new FileNameExtensionFilter("json files","json"));
         int result = guide.showOpenDialog(null);
         if(result==JFileChooser.APPROVE_OPTION) {
             this.filePath= Paths.get(guide.getSelectedFile().getAbsolutePath());
