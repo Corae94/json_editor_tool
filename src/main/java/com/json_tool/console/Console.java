@@ -26,7 +26,7 @@ public class Console extends JFrame{
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         this.guide = new JPanel(new GridLayout(0,3));
-        this.guide.add(new JLabel("Key",));
+        this.guide.add(new JLabel("Key"));
         this.guide.add(new JLabel("Value"));
         this.guide.add(new JLabel("Edit Field"));
         this.scrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
