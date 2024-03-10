@@ -9,8 +9,7 @@ import com.json_tool.dao.Dao;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +21,8 @@ public class Biz implements MenuListener {
     private Dao dao;
     private JMenu openJson;
     private JMenu update;
-    private HashMap<String,Object>data;
-    private HashMap<String,Object> correlations;
+    private LinkedHashMap<String,Object>data;
+    private LinkedHashMap<String,Object> correlations;
 
     public static synchronized Biz getInstance(){
         if(INSTANCE == null){
@@ -83,10 +82,10 @@ public class Biz implements MenuListener {
             key.add(new JLabel(e.getKey()));
             if(e.getValue() instanceof String){
                 value.add(new JLabel(String.valueOf(e.getValue())));
-                edit.add(((HashMap<String,JTextField>)this.correlations.get(e.getKey())).get(String.valueOf(e.getValue())));
+                edit.add(((LinkedHashMap<String,JTextField>)this.correlations.get(e.getKey())).get(String.valueOf(e.getValue())));
             }else{
-                if(e.getValue() instanceof HashMap<?,?>){
-                    this.populateValues((HashMap<String, Object>) e.getValue(), (HashMap<String, Object>) this.correlations.get(e.getKey()),value,edit);
+                if(e.getValue() instanceof LinkedHashMap<?,?>){
+                    this.populateValues((LinkedHashMap<String, Object>) e.getValue(), (LinkedHashMap<String, Object>) this.correlations.get(e.getKey()),value,edit);
                 }else if (e.getValue() instanceof List<?>){
                     this.populateValues((List<Object>) e.getValue(), (List<Object>) this.correlations.get(e.getKey()),value,edit);
                 }
@@ -99,14 +98,14 @@ public class Biz implements MenuListener {
         this.console.getView().add(content);
     }
 
-    private void populateValues(HashMap<String,Object> map,HashMap<String,Object> correlation, JPanel value,JPanel edit){
+    private void populateValues(LinkedHashMap<String,Object> map,LinkedHashMap<String,Object> correlation, JPanel value,JPanel edit){
         for(Map.Entry<String,Object> e :map.entrySet()){
             if(e.getValue() instanceof String){
                 value.add(new JLabel(String.valueOf(e.getValue())));
-                edit.add(((HashMap<String,JTextField>)correlation.get(e.getKey())).get(String.valueOf(e.getValue())));
+                edit.add(((LinkedHashMap<String,JTextField>)correlation.get(e.getKey())).get(String.valueOf(e.getValue())));
             }else{
-                if(e.getValue() instanceof HashMap<?,?>){
-                    this.populateValues((HashMap<String, Object>) e.getValue(), (HashMap<String, Object>) correlation.get(e.getKey()),value,edit);
+                if(e.getValue() instanceof LinkedHashMap<?,?>){
+                    this.populateValues((LinkedHashMap<String, Object>) e.getValue(), (LinkedHashMap<String, Object>) correlation.get(e.getKey()),value,edit);
                 }else if (e.getValue() instanceof List<?>){
                     this.populateValues((List<Object>) e.getValue(), (List<Object>) correlation.get(e.getKey()),value,edit);
                 }
@@ -118,10 +117,10 @@ public class Biz implements MenuListener {
         for (int i = 0; i < map.size(); i++) {
             if(map.get(i) instanceof String){
                 value.add(new JLabel(String.valueOf(map.get(i))));
-                edit.add(((HashMap<String, JTextField>) correlation.get(i)).get(String.valueOf(map.get(i))));
+                edit.add(((LinkedHashMap<String, JTextField>) correlation.get(i)).get(String.valueOf(map.get(i))));
             }else{
-                if(map.get(i) instanceof HashMap<?,?>){
-                    this.populateValues((HashMap<String, Object>)map.get(i), (HashMap<String, Object>) correlation.get(i),value,edit);
+                if(map.get(i) instanceof LinkedHashMap<?,?>){
+                    this.populateValues((LinkedHashMap<String, Object>)map.get(i), (LinkedHashMap<String, Object>) correlation.get(i),value,edit);
                 }else if (map.get(i) instanceof List<?>){
                     this.populateValues((List<Object>) map.get(i), (List<Object>) correlation.get(i),value,edit);
                 }
@@ -129,15 +128,15 @@ public class Biz implements MenuListener {
         }
     }
 
-    private void updateValues(HashMap<String,Object> map,HashMap<String,Object> correlation){
+    private void updateValues(LinkedHashMap<String,Object> map,LinkedHashMap<String,Object> correlation){
         for(Map.Entry<String,Object> e :map.entrySet()){
             if(e.getValue() instanceof String){
-                if(!((HashMap<String,JTextField>)correlation.get(e.getKey())).get(String.valueOf(e.getValue())).getText().isEmpty()){
-                    e.setValue(((HashMap<String,JTextField>)correlation.get(e.getKey())).get(String.valueOf(e.getValue())).getText());
+                if(!((LinkedHashMap<String,JTextField>)correlation.get(e.getKey())).get(String.valueOf(e.getValue())).getText().isEmpty()){
+                    e.setValue(((LinkedHashMap<String,JTextField>)correlation.get(e.getKey())).get(String.valueOf(e.getValue())).getText());
                 }
             }else{
-                if(e.getValue() instanceof HashMap<?,?>){
-                    this.updateValues((HashMap<String, Object>) e.getValue(), (HashMap<String, Object>) correlation.get(e.getKey()));
+                if(e.getValue() instanceof LinkedHashMap<?,?>){
+                    this.updateValues((LinkedHashMap<String, Object>) e.getValue(), (LinkedHashMap<String, Object>) correlation.get(e.getKey()));
                 }else if (e.getValue() instanceof List<?>){
                     this.updateValues((List<Object>) e.getValue(), (List<Object>) correlation.get(e.getKey()));
                 }
@@ -148,13 +147,13 @@ public class Biz implements MenuListener {
     private void updateValues(List<Object> map,List<Object> correlation){
         for (int i = 0; i < map.size(); i++) {
             if(map.get(i) instanceof String){
-                if(!(((HashMap<String, JTextField>) correlation.get(i)).get(String.valueOf(map.get(i)))).getText().isEmpty()){
+                if(!(((LinkedHashMap<String, JTextField>) correlation.get(i)).get(String.valueOf(map.get(i)))).getText().isEmpty()){
                     map.remove(map.get(i));
-                    map.add(i,(((HashMap<String, JTextField>) correlation.get(i)).get(String.valueOf(map.get(i)))).getText());
+                    map.add(i,(((LinkedHashMap<String, JTextField>) correlation.get(i)).get(String.valueOf(map.get(i)))).getText());
                 }
             }else{
-                if(map.get(i) instanceof HashMap<?,?>){
-                    this.updateValues((HashMap<String, Object>)map.get(i), (HashMap<String, Object>) correlation.get(i));
+                if(map.get(i) instanceof LinkedHashMap<?,?>){
+                    this.updateValues((LinkedHashMap<String, Object>)map.get(i), (LinkedHashMap<String, Object>) correlation.get(i));
                 }else if (map.get(i) instanceof List<?>){
                     this.updateValues((List<Object>) map.get(i), (List<Object>) correlation.get(i));
                 }

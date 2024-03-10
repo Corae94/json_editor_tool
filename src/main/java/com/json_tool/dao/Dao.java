@@ -15,8 +15,8 @@ public class Dao {
     private File file;
     private Path filePath;
     private String text;
-    private HashMap<String,Object> data;
-    private HashMap<String,Object> guiData;
+    private LinkedHashMap<String,Object> data;
+    private LinkedHashMap<String,Object> guiData;
     private String fileText;
     private int beginJson;
     private int endJson;
@@ -69,39 +69,7 @@ public class Dao {
         }
     }
 
-    public static HashMap<String,Object> composeMap(JsonObject json){
-        HashMap<String, Object> result = new HashMap<>();
-        for(Map.Entry<String, JsonElement> e : json.entrySet()){
-            if(e.getValue().isJsonArray()){
-                result.put(e.getKey(),composeMap(e.getValue().getAsJsonArray()));
-            } else if (e.getValue().isJsonObject()) {
-                result.put(e.getKey(),composeMap(e.getValue().getAsJsonObject()));
-            } else if (e.getValue().isJsonPrimitive()) {
-                result.put(e.getKey(),e.getValue().getAsString());
-            }
-        }
-        return result;
-    }
-
-    public static HashMap<String,Object> composeMap(JsonArray json){
-        HashMap<String,Object> resultMap = new HashMap<>();
-        List<Object> result = new ArrayList<>();
-        if(!json.isEmpty()){
-            for (int i = 0; i < json.size(); i++) {
-                if(json.get(i).isJsonObject()){
-                    result.add(composeMap(json.get(i).getAsJsonObject()));
-                } else if (json.get(i).isJsonArray()) {
-                    result.add(composeMap(json.get(i).getAsJsonArray()));
-                }else if (json.get(i).isJsonPrimitive()){
-                    result.add(json.get(i).toString());
-                }
-            }
-            resultMap.put("Collection",result);
-        }
-        return resultMap;
-    }
-
-    public void initData(){
+    private void initData(){
         try {
             Scanner reader = new Scanner(new FileReader(this.file));
             StringBuilder writer = new StringBuilder();
@@ -130,16 +98,48 @@ public class Dao {
         }
     }
 
+    private static LinkedHashMap<String,Object> composeMap(JsonObject json){
+        LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+        for(Map.Entry<String, JsonElement> e : json.entrySet()){
+            if(e.getValue().isJsonArray()){
+                result.put(e.getKey(),composeMap(e.getValue().getAsJsonArray()));
+            } else if (e.getValue().isJsonObject()) {
+                result.put(e.getKey(),composeMap(e.getValue().getAsJsonObject()));
+            } else if (e.getValue().isJsonPrimitive()) {
+                result.put(e.getKey(),e.getValue().getAsString());
+            }
+        }
+        return result;
+    }
+
+    private static LinkedHashMap<String,Object> composeMap(JsonArray json){
+        LinkedHashMap<String,Object> resultMap = new LinkedHashMap<>();
+        List<Object> result = new ArrayList<>();
+        if(!json.isEmpty()){
+            for (int i = 0; i < json.size(); i++) {
+                if(json.get(i).isJsonObject()){
+                    result.add(composeMap(json.get(i).getAsJsonObject()));
+                } else if (json.get(i).isJsonArray()) {
+                    result.add(composeMap(json.get(i).getAsJsonArray()));
+                }else if (json.get(i).isJsonPrimitive()){
+                    result.add(json.get(i).toString());
+                }
+            }
+            resultMap.put("Collection",result);
+        }
+        return resultMap;
+    }
+
     /*-----COMPOSE-MAP-FOR-GUI-----*/
-    public static HashMap<String,Object> composeGuiMap(JsonObject json){
-        HashMap<String, Object> result = new HashMap<>();
+    private static LinkedHashMap<String,Object> composeGuiMap(JsonObject json){
+        LinkedHashMap<String, Object> result = new LinkedHashMap<>();
         for(Map.Entry<String, JsonElement> e : json.entrySet()){
             if(e.getValue().isJsonArray()){
                 result.put(e.getKey(),composeGuiMap(e.getValue().getAsJsonArray()));
             } else if (e.getValue().isJsonObject()) {
                 result.put(e.getKey(),composeGuiMap(e.getValue().getAsJsonObject()));
             } else if (e.getValue().isJsonPrimitive()) {
-                HashMap<String,Object> map = new HashMap<>();
+                LinkedHashMap<String,Object> map = new LinkedHashMap<>();
                 map.put(e.getValue().getAsString(),new JTextField());
                 result.put(e.getKey(),map);
             }
@@ -147,8 +147,8 @@ public class Dao {
         return result;
     }
 
-    public static HashMap<String,Object> composeGuiMap(JsonArray json){
-        HashMap<String,Object> resultMap = new HashMap<>();
+    private static LinkedHashMap<String,Object> composeGuiMap(JsonArray json){
+        LinkedHashMap<String,Object> resultMap = new LinkedHashMap<>();
         List<Object> result = new ArrayList<>();
         if(!json.isEmpty()){
             for (int i = 0; i < json.size(); i++) {
@@ -157,7 +157,7 @@ public class Dao {
                 } else if (json.get(i).isJsonArray()) {
                     result.add(composeGuiMap(json.get(i).getAsJsonArray()));
                 }else if (json.get(i).isJsonPrimitive()){
-                    HashMap<String,Object> map = new HashMap<>();
+                    LinkedHashMap<String,Object> map = new LinkedHashMap<>();
                     map.put(json.get(i).toString(),new JTextField());
                     result.add(map);
                 }
@@ -197,11 +197,11 @@ public class Dao {
     }
 
     /*-----GETTERS-&-SETTERS-----*/
-    public HashMap<String, Object> getData() {
+    public LinkedHashMap<String, Object> getData() {
         return this.data;
     }
 
-    public HashMap<String, Object> getGuiData() {
+    public LinkedHashMap<String, Object> getGuiData() {
         return this.guiData;
     }
 
