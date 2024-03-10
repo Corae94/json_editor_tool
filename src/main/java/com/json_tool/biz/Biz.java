@@ -50,6 +50,10 @@ public class Biz implements MenuListener {
         this.dao = new Dao();
         this.data = this.dao.getData();
         this.correlations=this.dao.getGuiData();
+        this.initGui();
+    }
+
+    private void initGui() {
         this.console = new Console();
         this.openJson = new JMenu("Open another json (discard values if not updated)");
         this.openJson.addMenuListener(this);
@@ -166,8 +170,10 @@ public class Biz implements MenuListener {
             this.init();
         }else if(e.getSource().equals(this.update)){
             this.updateValues(this.data,this.correlations);
-            this.dao.setData(this.data);
             this.dao.saveData();
+            this.data= this.dao.getData();
+            this.correlations=this.dao.getGuiData();
+            this.initGui();
         }
     }
 

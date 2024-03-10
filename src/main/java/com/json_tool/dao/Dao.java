@@ -32,32 +32,7 @@ public class Dao {
         if(result==JFileChooser.APPROVE_OPTION) {
             this.filePath= Paths.get(guide.getSelectedFile().getAbsolutePath());
             this.file=this.filePath.toFile();
-            try {
-                Scanner reader = new Scanner(new FileReader(this.file));
-                StringBuilder writer = new StringBuilder();
-                while(reader.hasNext()){
-                    writer.append(reader.next());
-                }
-                reader.close();
-                this.fileText = writer.toString();
-                this.checkFileJson(this.fileText);
-                Gson gson = new GsonBuilder().create();
-                if(this.text.startsWith("{")){
-                    this.data = composeMap(gson.fromJson(this.fileText, JsonObject.class));
-                    this.guiData = composeGuiMap(gson.fromJson(this.fileText,JsonObject.class));
-                }else if(this.text.startsWith("[")){
-                    this.data = composeMap(gson.fromJson(this.fileText, JsonArray.class));
-                    this.guiData = composeGuiMap(gson.fromJson(this.fileText,JsonArray.class));
-                }
-            }catch (FileNotFoundException|IllegalStateException fileException){
-                if(fileException instanceof FileNotFoundException) {
-                    JOptionPane.showMessageDialog(null,"The file could not be found, check its path","Error",JOptionPane.ERROR_MESSAGE);
-                    this.init();
-                } else {
-                    JOptionPane.showMessageDialog(null,"An error has occurred while reading the file","Error",JOptionPane.ERROR_MESSAGE);
-                    System.exit(1);
-                }
-            }
+            this.initData();
         }else{
             System.exit(1);
         }
@@ -126,6 +101,35 @@ public class Dao {
         return resultMap;
     }
 
+    public void initData(){
+        try {
+            Scanner reader = new Scanner(new FileReader(this.file));
+            StringBuilder writer = new StringBuilder();
+            while(reader.hasNext()){
+                writer.append(reader.next());
+            }
+            reader.close();
+            this.fileText = writer.toString();
+            this.checkFileJson(this.fileText);
+            Gson gson = new GsonBuilder().create();
+            if(this.text.startsWith("{")){
+                this.data = composeMap(gson.fromJson(this.fileText, JsonObject.class));
+                this.guiData = composeGuiMap(gson.fromJson(this.fileText,JsonObject.class));
+            }else if(this.text.startsWith("[")){
+                this.data = composeMap(gson.fromJson(this.fileText, JsonArray.class));
+                this.guiData = composeGuiMap(gson.fromJson(this.fileText,JsonArray.class));
+            }
+        }catch (FileNotFoundException|IllegalStateException fileException){
+            if(fileException instanceof FileNotFoundException) {
+                JOptionPane.showMessageDialog(null,"The file could not be found, check its path","Error",JOptionPane.ERROR_MESSAGE);
+                this.init();
+            } else {
+                JOptionPane.showMessageDialog(null,"An error has occurred while reading the file","Error",JOptionPane.ERROR_MESSAGE);
+                System.exit(1);
+            }
+        }
+    }
+
     /*-----COMPOSE-MAP-FOR-GUI-----*/
     public static HashMap<String,Object> composeGuiMap(JsonObject json){
         HashMap<String, Object> result = new HashMap<>();
@@ -185,6 +189,7 @@ public class Dao {
                         StandardOpenOption.TRUNCATE_EXISTING);
             }
         }
+        this.initData();
         }catch (IOException ioe){
             JOptionPane.showMessageDialog(null,"An error has occurred while saving the data, please retry later","Error",JOptionPane.ERROR_MESSAGE);
         }
@@ -194,10 +199,6 @@ public class Dao {
     /*-----GETTERS-&-SETTERS-----*/
     public HashMap<String, Object> getData() {
         return this.data;
-    }
-
-    public void setData(HashMap<String, Object> data) {
-        this.data = data;
     }
 
     public HashMap<String, Object> getGuiData() {
