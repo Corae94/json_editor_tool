@@ -9,6 +9,7 @@ import com.json_tool.dao.Dao;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +69,7 @@ public class Biz implements MenuListener {
     }
 
     private void consoleCompose(){
+        JPanel content = new JPanel(new GridLayout(0,1));
         for (Map.Entry<String,Object> e: this.data.entrySet()){
             JPanel entry = new JPanel(new GridLayout(0,3));
             JPanel key = new JPanel(new GridLayout(0,1));
@@ -88,8 +90,9 @@ public class Biz implements MenuListener {
             entry.add(key);
             entry.add(value);
             entry.add(edit);
-            this.console.getView().add(entry);
+            content.add(entry);
         }
+        this.console.getView().add(content);
     }
 
     private void populateValues(HashMap<String,Object> map,HashMap<String,Object> correlation, JPanel value,JPanel edit){
@@ -173,6 +176,7 @@ public class Biz implements MenuListener {
             this.dao.saveData();
             this.data= this.dao.getData();
             this.correlations=this.dao.getGuiData();
+            this.console.dispatchEvent(new WindowEvent(this.console, WindowEvent.WINDOW_CLOSING));
             this.initGui();
         }
     }
