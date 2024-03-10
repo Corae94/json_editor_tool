@@ -2,7 +2,6 @@ package com.json_tool.dao;
 import com.google.gson.*;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
