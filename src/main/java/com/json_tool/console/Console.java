@@ -17,6 +17,7 @@ public class Console extends JFrame{
     public Console(){
         super("Json Tool");
         this.menu = new JMenuBar();
+        this.setJMenuBar(this.menu);
         this.init();
     }
 

@@ -58,6 +58,8 @@ public class Dao {
                     System.exit(1);
                 }
             }
+        }else{
+            System.exit(1);
         }
     }
 

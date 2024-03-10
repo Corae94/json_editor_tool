@@ -72,7 +72,7 @@ public class Biz implements MenuListener {
             key.add(new JLabel(e.getKey()));
             if(e.getValue() instanceof String){
                 value.add(new JLabel(String.valueOf(e.getValue())));
-                edit.add((JTextField)this.correlations.get(e.getKey()));
+                edit.add(((HashMap<String,JTextField>)this.correlations.get(e.getKey())).get(String.valueOf(e.getValue())));
             }else{
                 if(e.getValue() instanceof HashMap<?,?>){
                     this.populateValues((HashMap<String, Object>) e.getValue(), (HashMap<String, Object>) this.correlations.get(e.getKey()),value,edit);
@@ -91,7 +91,7 @@ public class Biz implements MenuListener {
         for(Map.Entry<String,Object> e :map.entrySet()){
             if(e.getValue() instanceof String){
                 value.add(new JLabel(String.valueOf(e.getValue())));
-                edit.add((JTextField)correlation.get(e.getKey()));
+                edit.add(((HashMap<String,JTextField>)correlation.get(e.getKey())).get(String.valueOf(e.getValue())));
             }else{
                 if(e.getValue() instanceof HashMap<?,?>){
                     this.populateValues((HashMap<String, Object>) e.getValue(), (HashMap<String, Object>) correlation.get(e.getKey()),value,edit);
@@ -120,8 +120,8 @@ public class Biz implements MenuListener {
     private void updateValues(HashMap<String,Object> map,HashMap<String,Object> correlation){
         for(Map.Entry<String,Object> e :map.entrySet()){
             if(e.getValue() instanceof String){
-                if(!((JTextField)correlation.get(e.getKey())).getText().isEmpty()){
-                    e.setValue(((JTextField)correlation.get(e.getKey())).getText());
+                if(!((HashMap<String,JTextField>)correlation.get(e.getKey())).get(e.getValue()).getText().isEmpty()){
+                    e.setValue(((HashMap<String,JTextField>)correlation.get(e.getKey())).get(e.getValue()).getText());
                 }
             }else{
                 if(e.getValue() instanceof HashMap<?,?>){
