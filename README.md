@@ -1,5 +1,4 @@
-Json editor tool requested for Francesco
-
+Json editor tool requested by [fravellu](https://github.com/fravellu)
 ------------------
 
 Dependencies and libraries:
