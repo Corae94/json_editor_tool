@@ -32,7 +32,7 @@ public class Console extends JFrame{
         this.scrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.scrollPane.getViewport().setLayout(new GridLayout(0,1));
         this.add(this.scrollPane,BorderLayout.CENTER);
-        this.controls = new JPanel(new GridLayout(0,2));
+        this.controls = new JPanel(new GridLayout(0,1));
         this.add(this.controls,BorderLayout.SOUTH);
         this.add(this.guide,BorderLayout.NORTH);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
